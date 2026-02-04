@@ -48,12 +48,12 @@ export default function InputForm({ input, setInput }: Props) {
     const newValue = Math.max(0, Math.min(100, value));
     const otherField = field === 'storeShare' ? 'deliveryShare' : 'storeShare';
     setInput({
-      ...input,
-      salesMix: {
-        [field]: newValue,
-        [otherField]: 100 - newValue,
-      },
-    });
+  ...input,
+  salesMix: {
+    storeShare: field === 'storeShare' ? newValue : 100 - newValue,
+    deliveryShare: field === 'deliveryShare' ? newValue : 100 - newValue,
+   },
+  });
   };
 
   const updateAov = (field: keyof BusinessInput['aov'], value: number) => {
