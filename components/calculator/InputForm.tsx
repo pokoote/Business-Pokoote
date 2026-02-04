@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { BusinessInput } from '@/lib/types';
 import { getPresetNames, getPresetByKey } from '@/lib/presets';
 
@@ -46,14 +47,17 @@ export default function InputForm({ input, setInput }: Props) {
 
   const updateSalesMix = (field: keyof BusinessInput['salesMix'], value: number) => {
     const newValue = Math.max(0, Math.min(100, value));
-    const otherField = field === 'storeShare' ? 'deliveryShare' : 'storeShare';
+    
+    // 수정된 부분: 명시적으로 storeShare와 deliveryShare를 계산
+    const updatedSalesMix = {
+      storeShare: field === 'storeShare' ? newValue : 100 - newValue,
+      deliveryShare: field === 'deliveryShare' ? newValue : 100 - newValue,
+    };
+    
     setInput({
-  ...input,
-  salesMix: {
-    storeShare: field === 'storeShare' ? newValue : 100 - newValue,
-    deliveryShare: field === 'deliveryShare' ? newValue : 100 - newValue,
-   },
-  });
+      ...input,
+      salesMix: updatedSalesMix,
+    });
   };
 
   const updateAov = (field: keyof BusinessInput['aov'], value: number) => {
@@ -467,6 +471,3 @@ export default function InputForm({ input, setInput }: Props) {
     </div>
   );
 }
-
-// useState import 추가
-import { useState } from 'react';
