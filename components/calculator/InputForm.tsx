@@ -48,8 +48,8 @@ export default function InputForm({ input, setInput }: Props) {
   const updateSalesMix = (field: keyof BusinessInput['salesMix'], value: number) => {
     const newValue = Math.max(0, Math.min(100, value));
     
-    // 수정된 부분: 명시적으로 storeShare와 deliveryShare를 계산
-    const updatedSalesMix = {
+    // 명확한 타입 지정으로 TypeScript 에러 방지
+    const updatedSalesMix: BusinessInput['salesMix'] = {
       storeShare: field === 'storeShare' ? newValue : 100 - newValue,
       deliveryShare: field === 'deliveryShare' ? newValue : 100 - newValue,
     };
@@ -70,7 +70,10 @@ export default function InputForm({ input, setInput }: Props) {
     });
   };
 
-  const updateCapacityCheck = (field: keyof NonNullable<BusinessInput['capacityCheck']>, value: number | undefined) => {
+  const updateCapacityCheck = (
+    field: keyof NonNullable<BusinessInput['capacityCheck']>,
+    value: number | undefined
+  ) => {
     setInput({
       ...input,
       capacityCheck: {
@@ -88,7 +91,8 @@ export default function InputForm({ input, setInput }: Props) {
       <div className="card">
         <h3 className="text-lg font-bold mb-3">업종 프리셋 (선택)</h3>
         <p className="text-sm text-gray-600 mb-3">
-          예시 값으로 빠르게 시작하세요. <span className="text-orange-600 font-semibold">실제 값으로 반드시 수정하세요.</span>
+          예시 값으로 빠르게 시작하세요.{' '}
+          <span className="text-orange-600 font-semibold">실제 값으로 반드시 수정하세요.</span>
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {presets.map((preset) => (
@@ -105,12 +109,12 @@ export default function InputForm({ input, setInput }: Props) {
 
       {/* 고정비 */}
       <div className="card">
-        <h3 className="text-lg font-bold mb-3">1. 월 고정비 <span className="text-red-500">*필수</span></h3>
-        
+        <h3 className="text-lg font-bold mb-3">
+          1. 월 고정비 <span className="text-red-500">*필수</span>
+        </h3>
+
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
-            고정비 합계 (원)
-          </label>
+          <label className="block text-sm font-medium mb-1">고정비 합계 (원)</label>
           <input
             type="number"
             className="input-field text-lg font-bold"
@@ -204,8 +208,10 @@ export default function InputForm({ input, setInput }: Props) {
 
       {/* 변동비율 */}
       <div className="card">
-        <h3 className="text-lg font-bold mb-3">2. 변동비율 (매출 대비 %) <span className="text-red-500">*필수</span></h3>
-        
+        <h3 className="text-lg font-bold mb-3">
+          2. 변동비율 (매출 대비 %) <span className="text-red-500">*필수</span>
+        </h3>
+
         <div className="space-y-3">
           <div>
             <label className="block text-sm font-medium mb-1">원가율 (%)</label>
@@ -284,8 +290,10 @@ export default function InputForm({ input, setInput }: Props) {
 
       {/* 매출 믹스 */}
       <div className="card">
-        <h3 className="text-lg font-bold mb-3">3. 매출 믹스 <span className="text-red-500">*필수</span></h3>
-        
+        <h3 className="text-lg font-bold mb-3">
+          3. 매출 믹스 <span className="text-red-500">*필수</span>
+        </h3>
+
         <div className="space-y-3">
           <div>
             <label className="block text-sm font-medium mb-1">매장 비중 (%)</label>
@@ -317,8 +325,10 @@ export default function InputForm({ input, setInput }: Props) {
 
       {/* 객단가 */}
       <div className="card">
-        <h3 className="text-lg font-bold mb-3">4. 객단가 <span className="text-red-500">*필수</span></h3>
-        
+        <h3 className="text-lg font-bold mb-3">
+          4. 객단가 <span className="text-red-500">*필수</span>
+        </h3>
+
         <div className="space-y-3">
           <div>
             <label className="block text-sm font-medium mb-1">매장 객단가 (원)</label>
@@ -347,7 +357,9 @@ export default function InputForm({ input, setInput }: Props) {
 
       {/* 영업일수 */}
       <div className="card">
-        <h3 className="text-lg font-bold mb-3">5. 월 영업일수 <span className="text-red-500">*필수</span></h3>
+        <h3 className="text-lg font-bold mb-3">
+          5. 월 영업일수 <span className="text-red-500">*필수</span>
+        </h3>
         <input
           type="number"
           className="input-field"
@@ -395,7 +407,9 @@ export default function InputForm({ input, setInput }: Props) {
                     type="number"
                     className="input-field"
                     value={input.capacityCheck?.seats || ''}
-                    onChange={(e) => updateCapacityCheck('seats', e.target.value ? Number(e.target.value) : undefined)}
+                    onChange={(e) =>
+                      updateCapacityCheck('seats', e.target.value ? Number(e.target.value) : undefined)
+                    }
                     min="1"
                     placeholder="예: 20"
                   />
@@ -406,7 +420,12 @@ export default function InputForm({ input, setInput }: Props) {
                     type="number"
                     className="input-field"
                     value={input.capacityCheck?.avgDwellMinutes || ''}
-                    onChange={(e) => updateCapacityCheck('avgDwellMinutes', e.target.value ? Number(e.target.value) : undefined)}
+                    onChange={(e) =>
+                      updateCapacityCheck(
+                        'avgDwellMinutes',
+                        e.target.value ? Number(e.target.value) : undefined
+                      )
+                    }
                     min="1"
                     placeholder="예: 60"
                   />
@@ -417,7 +436,12 @@ export default function InputForm({ input, setInput }: Props) {
                     type="number"
                     className="input-field"
                     value={input.capacityCheck?.netServiceHoursPerDay || ''}
-                    onChange={(e) => updateCapacityCheck('netServiceHoursPerDay', e.target.value ? Number(e.target.value) : undefined)}
+                    onChange={(e) =>
+                      updateCapacityCheck(
+                        'netServiceHoursPerDay',
+                        e.target.value ? Number(e.target.value) : undefined
+                      )
+                    }
                     min="0.1"
                     step="0.5"
                     placeholder="예: 10"
@@ -435,7 +459,12 @@ export default function InputForm({ input, setInput }: Props) {
                     type="number"
                     className="input-field"
                     value={input.capacityCheck?.peakHoursPerDay || ''}
-                    onChange={(e) => updateCapacityCheck('peakHoursPerDay', e.target.value ? Number(e.target.value) : undefined)}
+                    onChange={(e) =>
+                      updateCapacityCheck(
+                        'peakHoursPerDay',
+                        e.target.value ? Number(e.target.value) : undefined
+                      )
+                    }
                     min="0.1"
                     step="0.5"
                     placeholder="예: 4"
@@ -447,7 +476,12 @@ export default function InputForm({ input, setInput }: Props) {
                     type="number"
                     className="input-field"
                     value={input.capacityCheck?.capacityOrdersPerHour || ''}
-                    onChange={(e) => updateCapacityCheck('capacityOrdersPerHour', e.target.value ? Number(e.target.value) : undefined)}
+                    onChange={(e) =>
+                      updateCapacityCheck(
+                        'capacityOrdersPerHour',
+                        e.target.value ? Number(e.target.value) : undefined
+                      )
+                    }
                     min="0.1"
                     placeholder="예: 8"
                   />
@@ -458,7 +492,12 @@ export default function InputForm({ input, setInput }: Props) {
                     type="number"
                     className="input-field"
                     value={input.capacityCheck?.prepMinutes || ''}
-                    onChange={(e) => updateCapacityCheck('prepMinutes', e.target.value ? Number(e.target.value) : undefined)}
+                    onChange={(e) =>
+                      updateCapacityCheck(
+                        'prepMinutes',
+                        e.target.value ? Number(e.target.value) : undefined
+                      )
+                    }
                     min="0.1"
                     placeholder="예: 7.5"
                   />

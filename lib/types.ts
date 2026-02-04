@@ -1,72 +1,68 @@
-import { z } from 'zod';
+/**
+ * 자영업 손익분기점 시뮬레이터 타입 정의
+ */
 
-// 입력 데이터 검증 스키마
-export const FixedCostsSchema = z.object({
-  rent: z.number().min(0, '임대료는 0 이상이어야 합니다'),
-  maintenance: z.number().min(0, '관리비는 0 이상이어야 합니다'),
-  utilities: z.number().min(0, '공과금은 0 이상이어야 합니다'),
-  fixedLabor: z.number().min(0, '고정인건비는 0 이상이어야 합니다'),
-  subscriptions: z.number().min(0, '구독/통신비는 0 이상이어야 합니다'),
-  depreciation: z.number().min(0, '리스/감가는 0 이상이어야 합니다'),
-  other: z.number().min(0, '기타고정비는 0 이상이어야 합니다'),
-});
+// 고정비 항목
+export interface FixedCosts {
+  rent: number;              // 임대료
+  maintenance: number;       // 관리비
+  utilities: number;         // 고정공과금
+  fixedLabor: number;        // 고정인건비
+  subscriptions: number;     // 구독/통신
+  depreciation: number;      // 리스/감가
+  other: number;             // 기타고정비
+}
 
-export const VariableCostsSchema = z.object({
-  cogsRate: z.number().min(0, '원가율은 0 이상이어야 합니다').max(100, '원가율은 100 이하여야 합니다'),
-  paymentFeeRate: z.number().min(0).max(100),
-  platformFeeRate: z.number().min(0).max(100),
-  packagingRate: z.number().min(0).max(100),
-  wasteRate: z.number().min(0).max(100).optional(),
-  variableLaborRate: z.number().min(0).max(100).optional(),
-});
+// 변동비율 항목
+export interface VariableCosts {
+  cogsRate: number;             // 원가율 (%)
+  paymentFeeRate: number;       // 결제수수료율 (%)
+  platformFeeRate: number;      // 플랫폼수수료율 (%)
+  packagingRate: number;        // 포장/소모품율 (%)
+  wasteRate?: number;           // 폐기/누락율 (%)
+  variableLaborRate?: number;   // 변동인건비율 (%)
+}
 
-export const SalesMixSchema = z.object({
-  storeShare: z.number().min(0).max(100),
-  deliveryShare: z.number().min(0).max(100),
-}).refine((data) => data.storeShare + data.deliveryShare === 100, {
-  message: '매장 비중과 배달 비중의 합은 100%여야 합니다',
-});
+// 매출 믹스
+export interface SalesMix {
+  storeShare: number;      // 매장 비중 (%)
+  deliveryShare: number;   // 배달 비중 (%)
+}
 
-export const AverageOrderValueSchema = z.object({
-  storeAov: z.number().min(1, '객단가는 1원 이상이어야 합니다'),
-  deliveryAov: z.number().min(1, '객단가는 1원 이상이어야 합니다').optional(),
-});
+// 객단가
+export interface AOV {
+  storeAov: number;        // 매장 객단가 (원)
+  deliveryAov?: number;    // 배달 객단가 (원)
+}
 
-export const CapacityCheckSchema = z.object({
+// 현실가능성 캐파 체크 (선택)
+export interface CapacityCheck {
   // 매장 캐파
-  seats: z.number().min(1, '좌석 수는 1 이상이어야 합니다').optional(),
-  avgDwellMinutes: z.number().min(1, '체류시간은 1분 이상이어야 합니다').optional(),
-  netServiceHoursPerDay: z.number().min(0.1, '영업시간은 0.1시간 이상이어야 합니다').optional(),
+  seats?: number;                    // 좌석 수
+  avgDwellMinutes?: number;          // 평균 체류시간 (분)
+  netServiceHoursPerDay?: number;    // 순영업시간 (시간/일)
   
   // 배달 캐파
-  peakHoursPerDay: z.number().min(0.1).optional(),
-  capacityOrdersPerHour: z.number().min(0.1).optional(),
-  prepMinutes: z.number().min(0.1).optional(),
-});
+  peakHoursPerDay?: number;          // 피크타임 합계 (시간/일)
+  capacityOrdersPerHour?: number;    // 시간당 처리 가능 주문수
+  prepMinutes?: number;              // 평균 주문 처리시간 (분)
+}
 
-export const BusinessInputSchema = z.object({
-  fixedCosts: FixedCostsSchema,
-  variableCosts: VariableCostsSchema,
-  salesMix: SalesMixSchema,
-  aov: AverageOrderValueSchema,
-  openDays: z.number().min(1, '영업일수는 1일 이상이어야 합니다').max(31, '영업일수는 31일 이하여야 합니다'),
-  targetProfit: z.number().min(0).optional(),
-  capacityCheck: CapacityCheckSchema.optional(),
-});
+// 비즈니스 입력 (전체)
+export interface BusinessInput {
+  fixedCosts: FixedCosts;
+  variableCosts: VariableCosts;
+  salesMix: SalesMix;
+  aov: AOV;
+  openDays: number;              // 월 영업일수
+  targetProfit?: number;         // 목표 순이익 (선택)
+  capacityCheck?: CapacityCheck; // 캐파 체크 (선택)
+}
 
-export type FixedCosts = z.infer<typeof FixedCostsSchema>;
-export type VariableCosts = z.infer<typeof VariableCostsSchema>;
-export type SalesMix = z.infer<typeof SalesMixSchema>;
-export type AverageOrderValue = z.infer<typeof AverageOrderValueSchema>;
-export type CapacityCheck = z.infer<typeof CapacityCheckSchema>;
-export type BusinessInput = z.infer<typeof BusinessInputSchema>;
-
-// 계산 결과 타입
+// 계산 결과
 export interface CalculationResult {
-  // 기본 재무 지표
+  // 고정비 및 변동비율
   totalFixedCosts: number;
-  storeVariableRate: number;
-  deliveryVariableRate: number;
   blendedVariableRate: number;
   contributionMarginRate: number;
   
@@ -74,45 +70,70 @@ export interface CalculationResult {
   breakEvenMonthlyRevenue: number;
   breakEvenDailyRevenue: number;
   
-  // 목표 매출 (있을 경우)
+  // 목표이익 필요매출
   targetProfitMonthlyRevenue?: number;
   targetProfitDailyRevenue?: number;
   
-  // 필요 주문수
-  storeRequiredOrdersMonthly: number;
-  storeRequiredOrdersDaily: number;
-  deliveryRequiredOrdersMonthly: number;
-  deliveryRequiredOrdersDaily: number;
-  
-  // 캐파 체크 결과
-  capacityResult?: CapacityResult;
+  // 필요 주문수/고객수
+  requiredOrders: {
+    store: {
+      monthly: number;
+      daily: number;
+    };
+    delivery: {
+      monthly: number;
+      daily: number;
+    };
+    total: {
+      monthly: number;
+      daily: number;
+    };
+  };
   
   // 경고/에러
   warnings: string[];
-  errors: string[];
   isValid: boolean;
-}
-
-export interface CapacityResult {
-  // 매장 캐파
-  requiredAvgSeatOccupancy?: number;
-  storeCapacityStatus?: 'comfortable' | 'possible' | 'tight' | 'impossible';
   
-  // 배달 캐파
-  requiredDeliveryOrdersPerHour?: number;
-  deliveryCapacityOrdersPerHour?: number;
-  deliveryCapacityStatus?: 'sufficient' | 'possible' | 'overload';
+  // 캐파 체크 결과
+  capacityAnalysis?: {
+    store?: {
+      requiredAvgSeatOccupancy: number;
+      status: 'feasible' | 'tight' | 'difficult' | 'impossible';
+      message: string;
+    };
+    delivery?: {
+      requiredOrdersPerHour: number;
+      capacityOrdersPerHour: number;
+      status: 'feasible' | 'tight' | 'difficult' | 'impossible';
+      message: string;
+    };
+  };
 }
 
-export interface SensitivityAnalysis {
-  cogsRateImpact: Array<{ rate: number; revenue: number }>;
-  aovImpact: Array<{ aov: number; revenue: number }>;
-}
-
+// 시나리오 (로컬스토리지 저장용)
 export interface Scenario {
   id: string;
   name: string;
   input: BusinessInput;
-  result: CalculationResult;
   createdAt: number;
+}
+
+// 민감도 분석 파라미터
+export interface SensitivityParams {
+  cogsRateChange: number;   // 원가율 변동 (±%p)
+  aovChange: number;        // 객단가 변동 (±%)
+}
+
+// 민감도 분석 결과
+export interface SensitivityResult {
+  scenario: string;
+  breakEvenMonthlyRevenue: number;
+  targetProfitMonthlyRevenue?: number;
+}
+
+// 프리셋 정보
+export interface PresetInfo {
+  key: string;
+  name: string;
+  description: string;
 }

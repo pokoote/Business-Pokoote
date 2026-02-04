@@ -1,210 +1,161 @@
-import Link from 'next/link';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-
 export default function AboutPage() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-1 py-12 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-6">ℹ️ 소개</h1>
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <h1 className="text-4xl font-bold text-gray-900 mb-8">소개</h1>
+
+        {/* 도구의 목적 */}
+        <section className="card mb-8">
+          <h2 className="text-2xl font-bold mb-4">🎯 도구의 목적</h2>
+          <p className="text-gray-700 mb-4">
+            <strong>손익분기점 계산기</strong>는 자영업자가 사업의 핵심 재무 지표를 빠르고 쉽게 계산할 수 있도록 만든 무료 도구입니다.
+          </p>
+          <p className="text-gray-700 mb-4">
+            창업 전 사업성 검토, 운영 중 목표 설정, 메뉴/가격 조정 시 시뮬레이션 등 다양한 상황에서 활용할 수 있습니다.
+          </p>
+          <p className="text-gray-700">
+            특히 "손익분기점"이라는 추상적인 개념을 구체적인 숫자로 보여주고,
+            나아가 그 숫자가 현실적으로 달성 가능한지(캐파 체크)까지 검증합니다.
+          </p>
+        </section>
+
+        {/* 주요 기능 */}
+        <section className="card mb-8">
+          <h2 className="text-2xl font-bold mb-4">✨ 주요 기능</h2>
+          <ul className="space-y-3">
+            <li className="flex items-start">
+              <span className="text-2xl mr-3">💰</span>
+              <div>
+                <h3 className="font-bold">손익분기점 계산</h3>
+                <p className="text-gray-700 text-sm">
+                  고정비와 변동비를 입력하면 월/일 손익분기 매출을 즉시 계산합니다.
+                </p>
+              </div>
+            </li>
+            <li className="flex items-start">
+              <span className="text-2xl mr-3">🎯</span>
+              <div>
+                <h3 className="font-bold">목표이익 필요매출 계산</h3>
+                <p className="text-gray-700 text-sm">
+                  원하는 순이익을 달성하려면 얼마를 팔아야 하는지 계산합니다.
+                </p>
+              </div>
+            </li>
+            <li className="flex items-start">
+              <span className="text-2xl mr-3">📦</span>
+              <div>
+                <h3 className="font-bold">필요 주문수 계산</h3>
+                <p className="text-gray-700 text-sm">
+                  매장/배달 채널별로 하루에 몇 건을 팔아야 하는지 구체적으로 알려줍니다.
+                </p>
+              </div>
+            </li>
+            <li className="flex items-start">
+              <span className="text-2xl mr-3">🔍</span>
+              <div>
+                <h3 className="font-bold">현실가능성 캐파 체크</h3>
+                <p className="text-gray-700 text-sm">
+                  좌석 수, 체류시간, 영업시간을 기반으로 목표가 물리적으로 달성 가능한지 검증합니다.
+                </p>
+              </div>
+            </li>
+            <li className="flex items-start">
+              <span className="text-2xl mr-3">📊</span>
+              <div>
+                <h3 className="font-bold">민감도 분석</h3>
+                <p className="text-gray-700 text-sm">
+                  원가율이나 객단가 변화에 따라 손익분기점이 어떻게 달라지는지 확인할 수 있습니다.
+                </p>
+              </div>
+            </li>
+            <li className="flex items-start">
+              <span className="text-2xl mr-3">💾</span>
+              <div>
+                <h3 className="font-bold">시나리오 저장/비교</h3>
+                <p className="text-gray-700 text-sm">
+                  최대 3개의 시나리오를 저장하여 비교할 수 있습니다. (로컬 저장)
+                </p>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        {/* 데이터 처리 */}
+        <section className="card mb-8">
+          <h2 className="text-2xl font-bold mb-4">🔒 데이터 처리 방침</h2>
           
-          {/* 도구의 목적 */}
-          <section className="card mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-primary-600">도구의 목적</h2>
-            <p className="text-gray-700 mb-4">
-              <strong>손익분기점 계산기</strong>는 자영업자가 "이번 달에 얼마를 팔아야 하는지"를 
-              30초 안에 확인할 수 있도록 만든 무료 재무 시뮬레이터입니다.
+          <div className="space-y-4">
+            <div>
+              <h3 className="font-bold text-lg mb-2">개인정보 수집 없음</h3>
+              <p className="text-gray-700">
+                본 도구는 <strong>개인정보를 일체 수집하지 않습니다</strong>.
+                이름, 전화번호, 사업자번호, 상호명 등 어떠한 개인 식별 정보도 입력받지 않으며 저장하지 않습니다.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-lg mb-2">로컬 저장소만 사용</h3>
+              <p className="text-gray-700">
+                모든 데이터는 사용자의 웹 브라우저 <strong>localStorage</strong>에만 저장됩니다.
+                서버로 전송되지 않으며, 외부에 공유되지 않습니다.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-lg mb-2">로그인 불필요</h3>
+              <p className="text-gray-700">
+                계정 생성이나 로그인 없이 모든 기능을 자유롭게 사용할 수 있습니다.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-lg mb-2">쿠키 사용 최소화</h3>
+              <p className="text-gray-700">
+                필수 기능 외 쿠키는 사용하지 않습니다. 분석 도구(Google Analytics 등)도 선택 사항입니다.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* 면책사항 */}
+        <section className="card bg-yellow-50 border-yellow-200 mb-8">
+          <h2 className="text-2xl font-bold text-yellow-800 mb-4">⚠️ 면책사항</h2>
+          
+          <div className="space-y-4 text-yellow-700">
+            <p>
+              <strong>본 도구는 추정 계산 도구일 뿐이며, 다음과 같은 서비스를 제공하지 않습니다:</strong>
             </p>
-            <div className="bg-blue-50 p-4 rounded">
-              <p className="font-semibold mb-2">이 도구로 할 수 있는 것:</p>
-              <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
-                <li>손익분기점 매출 계산 (월/일)</li>
-                <li>목표 순이익 달성에 필요한 매출 계산</li>
-                <li>필요한 주문수/고객수 계산 (매장/배달 분리)</li>
-                <li>좌석·체류시간 기반 현실가능성(캐파) 체크</li>
-                <li>원가율·객단가 변화에 따른 민감도 분석</li>
-                <li>최대 3개 시나리오 저장/비교 (임대료 인상, 배달 비중 증가 등)</li>
-              </ul>
-            </div>
-          </section>
-
-          {/* 면책사항 */}
-          <section className="card mb-8 border-2 border-yellow-400">
-            <h2 className="text-2xl font-bold mb-4 text-orange-600">⚠️ 면책사항 (반드시 읽어주세요)</h2>
-            
-            <div className="space-y-4 text-gray-800">
-              <div className="bg-yellow-50 p-4 rounded">
-                <p className="font-bold mb-2">1. 추정 계산 도구입니다</p>
-                <p className="text-sm">
-                  본 도구는 입력된 데이터를 기반으로 <strong>추정 계산</strong>을 수행하는 도구입니다.
-                  법률 자문, 세무 자문, 회계 자문, 노무 자문, 투자 자문이 아닙니다.
-                </p>
-              </div>
-
-              <div className="bg-yellow-50 p-4 rounded">
-                <p className="font-bold mb-2">2. 실제와 차이가 있을 수 있습니다</p>
-                <p className="text-sm">
-                  계산 결과는 입력값의 정확도에 따라 달라지며, 실제 사업 결과와 차이가 있을 수 있습니다.
-                  모든 사업은 고유한 상황과 변수가 있으므로, 본 도구의 결과를 맹신하지 마시고 
-                  참고 자료로만 활용하시기 바랍니다.
-                </p>
-              </div>
-
-              <div className="bg-yellow-50 p-4 rounded">
-                <p className="font-bold mb-2">3. 전문가 상담을 권장합니다</p>
-                <p className="text-sm">
-                  창업, 사업 확장, 구조 변경 등 중요한 의사결정 시에는 반드시 
-                  <strong>세무사, 회계사, 경영 컨설턴트 등 전문가와 상담</strong>하시기 바랍니다.
-                </p>
-              </div>
-
-              <div className="bg-yellow-50 p-4 rounded">
-                <p className="font-bold mb-2">4. 책임 제한</p>
-                <p className="text-sm">
-                  본 도구의 사용으로 인해 발생하는 직간접적 손해, 손실, 기회 상실 등에 대해 
-                  제작자 및 운영자는 어떠한 법적 책임도 지지 않습니다.
-                </p>
-              </div>
-
-              <div className="bg-red-50 p-4 rounded border border-red-300">
-                <p className="font-bold text-red-700 mb-2">5. 사용자의 책임</p>
-                <p className="text-sm text-red-600">
-                  본 도구를 사용함으로써 귀하는 위 내용을 이해하고 동의한 것으로 간주됩니다.
-                  모든 입력 데이터의 정확성과 사업 의사결정의 책임은 전적으로 사용자에게 있습니다.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* 데이터 처리 방침 */}
-          <section className="card mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-primary-600">🔒 데이터 처리 방침</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-bold mb-2">개인정보 수집 없음</h3>
-                <p className="text-gray-700 text-sm">
-                  본 사이트는 <strong>개인정보를 일절 수집하지 않습니다</strong>. 
-                  이름, 전화번호, 이메일, 사업자번호 등 어떠한 개인 식별 정보도 요구하지 않습니다.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="font-bold mb-2">로컬 저장소만 사용</h3>
-                <p className="text-gray-700 text-sm mb-2">
-                  입력하신 모든 데이터와 시나리오는 <strong>귀하의 브라우저 로컬 저장소(localStorage)</strong>에만 저장됩니다.
-                </p>
-                <div className="bg-green-50 p-3 rounded text-sm">
-                  <p className="font-semibold text-green-800 mb-1">이것이 의미하는 것:</p>
-                  <ul className="list-disc list-inside space-y-1 text-green-700">
-                    <li>데이터가 서버로 전송되지 않습니다</li>
-                    <li>제작자/운영자가 귀하의 데이터를 볼 수 없습니다</li>
-                    <li>브라우저 캐시를 삭제하면 저장된 시나리오도 삭제됩니다</li>
-                    <li>다른 기기나 브라우저에서는 저장된 시나리오를 볼 수 없습니다</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="font-bold mb-2">로그인/회원가입 없음</h3>
-                <p className="text-gray-700 text-sm">
-                  본 사이트는 로그인이나 회원가입을 요구하지 않습니다. 
-                  방문 즉시 모든 기능을 자유롭게 사용할 수 있습니다.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="font-bold mb-2">쿠키 사용 최소화</h3>
-                <p className="text-gray-700 text-sm">
-                  필수적인 기능 구동을 위한 최소한의 쿠키만 사용하며, 
-                  추적/마케팅 목적의 쿠키는 사용하지 않습니다.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* 기술 스택 */}
-          <section className="card mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-primary-600">🛠️ 기술 스택</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <h3 className="font-semibold mb-2">프론트엔드</h3>
-                <ul className="text-sm text-gray-700 space-y-1">
-                  <li>• Next.js 14 (App Router)</li>
-                  <li>• TypeScript</li>
-                  <li>• TailwindCSS</li>
-                  <li>• Recharts</li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">검증 & 상태관리</h3>
-                <ul className="text-sm text-gray-700 space-y-1">
-                  <li>• Zod (입력 검증)</li>
-                  <li>• React State</li>
-                  <li>• Browser localStorage</li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          {/* 오픈소스 & 기여 */}
-          <section className="card mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-primary-600">🤝 개선 제안 & 문의</h2>
-            <p className="text-gray-700 mb-4">
-              본 도구는 자영업자분들에게 실질적인 도움을 드리기 위해 만들어졌습니다.
+            <ul className="list-disc list-inside ml-4 space-y-1">
+              <li>법률 자문</li>
+              <li>세무 자문</li>
+              <li>노무 자문</li>
+              <li>투자 자문</li>
+              <li>경영 컨설팅</li>
+            </ul>
+            <p>
+              실제 사업 결정, 창업, 투자, 세무 신고 등의 중요한 사안에는 반드시 전문가(세무사, 회계사, 변호사 등)의 조언을 받으시기 바랍니다.
             </p>
-            <div className="bg-blue-50 p-4 rounded">
-              <p className="font-semibold mb-2">이런 경우 연락주세요:</p>
-              <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
-                <li>계산 로직에 오류가 있는 것 같아요</li>
-                <li>이런 기능이 추가되면 좋겠어요</li>
-                <li>사용 중 버그를 발견했어요</li>
-                <li>UI/UX 개선 아이디어가 있어요</li>
-              </ul>
-            </div>
-          </section>
-
-          {/* 업데이트 내역 */}
-          <section className="card mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-primary-600">📅 버전 정보</h2>
-            <div className="space-y-3 text-sm">
-              <div className="border-l-4 border-primary-500 pl-3">
-                <p className="font-bold">v1.0.0 (2024-01-01)</p>
-                <ul className="list-disc list-inside mt-1 text-gray-700">
-                  <li>손익분기점 계산 기능</li>
-                  <li>목표이익 필요매출 계산</li>
-                  <li>현실가능성 캐파 체크</li>
-                  <li>시나리오 저장/비교 (최대 3개)</li>
-                  <li>민감도 분석</li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          {/* CTA */}
-          <section className="bg-gradient-to-br from-primary-600 to-blue-700 text-white p-8 rounded-lg text-center">
-            <h3 className="text-2xl font-bold mb-4">
-              지금 바로 손익분기점을 계산해보세요
-            </h3>
-            <p className="mb-6">
-              무료, 로그인 불필요, 30초 완성
+            <p>
+              본 도구의 계산 결과는 입력된 가정을 기반으로 한 추정치이며,
+              실제 사업 성과는 시장 상황, 경쟁, 운영 능력, 외부 변수 등 다양한 요인에 따라 달라질 수 있습니다.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/calculator" className="inline-block bg-white text-primary-600 font-bold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors">
-                계산기 시작하기
-              </Link>
-              <Link href="/guide" className="inline-block bg-primary-700 text-white font-bold px-8 py-3 rounded-lg border-2 border-white hover:bg-primary-800 transition-colors">
-                가이드 보기
-              </Link>
-            </div>
-          </section>
-        </div>
-      </main>
-      
-      <Footer />
+            <p>
+              본 도구 사용으로 인한 직간접적 손해에 대해 제작자는 책임을 지지 않습니다.
+            </p>
+          </div>
+        </section>
+
+        {/* 개선 제안 */}
+        <section className="card">
+          <h2 className="text-2xl font-bold mb-4">💬 개선 제안</h2>
+          <p className="text-gray-700 mb-4">
+            본 도구는 자영업자 여러분의 피드백을 통해 지속적으로 개선됩니다.
+          </p>
+          <p className="text-gray-700">
+            버그 리포트, 기능 제안, 사용 후기 등은 언제든지 환영합니다!
+          </p>
+        </section>
+      </div>
     </div>
   );
 }
