@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function HomePage() {
+export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white">
       {/* 히어로 섹션 */}
